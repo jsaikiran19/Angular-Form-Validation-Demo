@@ -1,0 +1,17 @@
+<div class="landing-page-container">
+  <div class="form-container bg-white">
+    <form [formGroup]="signUpForm">
+    <div class="sign-up-form" *ngIf="userInputs.length">
+      <ng-container *ngFor="let input of userInputs">
+      <div class="{{input.controlName}} input-control">
+        <input type="text" placeholder="{{input.placeholder}}" class="form-control" formControlName="{{input.controlName}}">
+        <div *ngIf="input.errorMsg()" class="name-msg text-danger">* {{input.errorMsg()}}</div>
+      </div>
+    </ng-container>
+    <div *ngIf="!errors" class="alert alert-success">
+      Form is Valid.
+    </div>
+    </div>
+  </form>
+  </div>
+</div>

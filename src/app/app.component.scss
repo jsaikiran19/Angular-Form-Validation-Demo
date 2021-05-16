@@ -1,0 +1,40 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+:host {
+    .landing-page-container {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background-color: #4372b6;
+        .form-container {
+            width: 450px;
+            display: flex;
+            position: absolute;
+            left: 35%;
+            height: 600px;
+            border-radius: 10px;
+            margin-top: 40px;
+            form {
+                width: 100%;
+                .text-danger {
+                    font-size: 12px;
+                    text-align: left;
+                }
+                .alert {
+                    width: 50%;
+                    margin: auto;
+                    text-align: center;
+                    margin-top: 30px;
+                }
+            }
+            .input-control {
+                width: 50%;
+                padding-top: 20px;
+                margin: auto;
+                text-align: center;
+                :disabled {
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}
