@@ -16,29 +16,29 @@ export class AppComponent implements OnInit {
     this.signUpForm = new FormGroup({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required])
+      password: new FormControl('', [Validators.required,Validators.minLength(8)]),
+      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)])
     }, this.matchPasswords());
 
     this.userInputs = [
       {
         controlName: 'name',
-        errorMsg: this.nameErrorMsg.bind(this),
+        errorMsg: this.getErrorMsg.bind(this,'name'),
         placeholder:'Name'
       },
       {
         controlName:'email',
-        errorMsg: this.emailErrorMsg.bind(this),
+        errorMsg: this.getErrorMsg.bind(this,'email'),
         placeholder:'Email'
       },
       {
         controlName:'password',
-        errorMsg:this.passwordErrorMsg.bind(this),
+        errorMsg:this.getErrorMsg.bind(this,'password'),
         placeholder:'Password'
       },
       {
         controlName:'confirmPassword',
-        errorMsg:this.confirmPasswordErrMsg.bind(this),
+        errorMsg:this.getErrorMsg.bind(this,'confirmPassword'),
         placeholder:'Confirm Password'
       }
     ];
@@ -53,9 +53,20 @@ export class AppComponent implements OnInit {
     return (control: AbstractControl): any => {
       const password = control.get('password').value;
       const confirmPassword = control.get('confirmPassword').value;
-      return password && password.length < 8 ? control.get('password').setErrors({ minLength: true }) :
-        confirmPassword && confirmPassword.length < 8 ? control.get('confirmPassword').setErrors({ minLength: true }) :
-          password && confirmPassword && password.toLowerCase() !== confirmPassword.toLowerCase() && control.get('confirmPassword').setErrors({ dontMatch: true })
+      return password && confirmPassword && password.toLowerCase() !== confirmPassword.toLowerCase() && control.get('confirmPassword').setErrors({ dontMatch: true })
+    }
+  }
+
+  getErrorMsg(key:string): string {
+    switch (key) {
+      case 'name': 
+      return this.nameErrorMsg()
+      case 'email': 
+      return this.emailErrorMsg()
+      case 'password': 
+      return this.passwordErrorMsg()
+      case 'confirmPassword':
+        return this.confirmPasswordErrMsg()
     }
   }
 
@@ -72,7 +83,7 @@ export class AppComponent implements OnInit {
 
   passwordErrorMsg(): string {
     const password = this.getControl('password');
-    return password.errors && (password.errors.required ? 'Password Required' : password.errors.minLength && 'Password should atleast be 8 characters');
+    return password.errors && (password.errors.required ? 'Password Required' : 'Password should atleast be 8 characters');
   }
 
   confirmPasswordErrMsg(): string {
